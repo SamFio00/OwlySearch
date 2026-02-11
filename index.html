@@ -15,10 +15,21 @@
     <div class="container">
         <img src="dist/media/img/mainOwly_logo1.png" alt="owly logo">
         <h1>Owly</h1>
+        <h2>powered by <a href="https://openlibrary.org/" target="_blank">OpenLibrary</a></h2>
         
         <div class="search-wrapper">
         <input type="text" id="searchInput" placeholder="Cerca per genere...">
         <button class="search-btn">🔍</button>
+        </div>
+
+        <div class="results"></div>
+
+        <div class="modal hidden">
+            <div class="modal-content">
+                <button class="close-modal">×</button>
+                <h2 class="modal-title"></h2>
+                <p class="modal-plot"></p>
+            </div>
         </div>
 
             
@@ -40,9 +51,11 @@
             </li>
             </ul>
             
-            <p> &copy;2026 Samuele Fiorini. Tutti i diritti riservati.</p>
+            <p> &copy;2026 Samuele Fiorini. All rights reserved.</p>
     </div>
 
     </div>
+
+    <script src="dist/JS/script.js "></script>
 </body>
 </html>
