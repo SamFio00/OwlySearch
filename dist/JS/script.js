@@ -1,6 +1,7 @@
 const searchInput = document.querySelector('#searchInput');
 const form = document.querySelector('.search-wrapper');
 const resultsDiv = document.querySelector('.results');
+const loadingDiv = document.querySelector('.loading'); // ✅ Loading div
 
 const modal = document.querySelector(".modal");
 const modalTitle = document.querySelector(".modal-title");
@@ -11,7 +12,6 @@ const closeModalBtn = document.querySelector(".close-modal");
 let allBooks = [];
 let booksShown = 0;
 const booksPerPage = 12;
-
 
 // 🔹 Open modal
 function openModal(book) {
@@ -30,14 +30,11 @@ modal.addEventListener("click", (e) => {
     }
 });
 
-
 // 🔥 Render books function
 function renderBooks() {
-
     const nextBooks = allBooks.slice(booksShown, booksShown + booksPerPage);
 
     nextBooks.forEach(book => {
-
         const bookDiv = document.createElement("div");
         bookDiv.classList.add("book-card");
 
@@ -92,10 +89,8 @@ function renderBooks() {
     addLoadMoreButton();
 }
 
-
 // 🔥 Add Load More button
 function addLoadMoreButton() {
-
     const existingBtn = document.querySelector(".load-more");
     if (existingBtn) existingBtn.remove();
 
@@ -110,7 +105,6 @@ function addLoadMoreButton() {
     }
 }
 
-
 // 🔥 Form submit
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -118,10 +112,11 @@ form.addEventListener("submit", async (e) => {
     const query = searchInput.value.toLowerCase().trim();
     if (!query) return;
 
-    const url = `https://openlibrary.org/subjects/${query}.json?limit=100`;
+    // ✅ Mostra loading all’inizio
+    loadingDiv.classList.remove("hidden");
 
     try {
-        const response = await fetch(url);
+        const response = await fetch(`https://openlibrary.org/subjects/${query}.json?limit=100`);
         const data = await response.json();
 
         resultsDiv.innerHTML = "";
@@ -135,12 +130,12 @@ form.addEventListener("submit", async (e) => {
 
         renderBooks();
 
-        resultsDiv.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+        resultsDiv.scrollIntoView({ behavior: "smooth", block: "start" });
 
     } catch {
         resultsDiv.innerHTML = "<p>Error fetching books. Please try again.</p>";
+    } finally {
+        // ✅ Nascondi loading quando fetch finisce
+        loadingDiv.classList.add("hidden");
     }
 });
