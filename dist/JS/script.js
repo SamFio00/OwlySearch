@@ -1,7 +1,7 @@
 const searchInput = document.querySelector('#searchInput');
 const form = document.querySelector('.search-wrapper');
 const resultsDiv = document.querySelector('.results');
-const loadingDiv = document.querySelector('.loading'); // Loading indicator element
+const loadingDiv = document.querySelector('.loading');
 
 const modal = document.querySelector(".modal");
 const modalTitle = document.querySelector(".modal-title");
