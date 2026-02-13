@@ -31,15 +31,22 @@
         
         <form class="search-wrapper">
         <input type="text" id="searchInput" placeholder="Search by subject...">
-        <button type="submit" class="search-btn">🔍</button>
+        <button type="submit" class="search-btn">
+            <i class="fas fa-search"></i>
+        </button>
         </form>
 
-        <div class="loading hidden">Loading...</div>
+        <div class="loading hidden">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
         <div class="results"></div>
 
         <div class="modal hidden">
             <div class="modal-content">
-                <button class="close-modal">×</button>
+                <button class="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
                 <h2 class="modal-title"></h2>
                 <p class="modal-plot"></p>
             </div>
@@ -68,6 +75,11 @@
     </div>
 
     </div>
+
+    <button id="scrollTopBtn" class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
 
     <script src="dist/JS/script.js "></script>
 </body>

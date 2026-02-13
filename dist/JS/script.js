@@ -1,19 +1,19 @@
 const searchInput = document.querySelector('#searchInput');
 const form = document.querySelector('.search-wrapper');
 const resultsDiv = document.querySelector('.results');
-const loadingDiv = document.querySelector('.loading'); // ✅ Loading div
+const loadingDiv = document.querySelector('.loading'); // Loading indicator element
 
 const modal = document.querySelector(".modal");
 const modalTitle = document.querySelector(".modal-title");
 const modalPlot = document.querySelector(".modal-plot");
 const closeModalBtn = document.querySelector(".close-modal");
 
-// 🔥 Pagination variables
+// Pagination state variables
 let allBooks = [];
 let booksShown = 0;
 const booksPerPage = 12;
 
-// 🔹 Open modal
+// Open modal with book details
 function openModal(book) {
     modalTitle.textContent = book.title;
     modalPlot.textContent = book.plot;
@@ -30,7 +30,7 @@ modal.addEventListener("click", (e) => {
     }
 });
 
-// 🔥 Render books function
+// Render books based on current pagination state
 function renderBooks() {
     const nextBooks = allBooks.slice(booksShown, booksShown + booksPerPage);
 
@@ -58,12 +58,14 @@ function renderBooks() {
         const popupBtn = bookDiv.querySelector(".popup-btn");
 
         popupBtn.addEventListener("click", async () => {
+            const originalText = popupBtn.textContent; 
+            popupBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`; 
+
             try {
                 const detailRes = await fetch(`https://openlibrary.org${book.key}.json`);
                 const detail = await detailRes.json();
 
                 let plot = "Description not available.";
-
                 if (detail.description) {
                     plot = typeof detail.description === "string"
                         ? detail.description
@@ -80,8 +82,11 @@ function renderBooks() {
                     title: book.title,
                     plot: "Unable to load description."
                 });
+            } finally {
+                popupBtn.textContent = originalText; 
             }
         });
+
     });
 
     booksShown += nextBooks.length;
@@ -89,7 +94,7 @@ function renderBooks() {
     addLoadMoreButton();
 }
 
-// 🔥 Add Load More button
+// Create and append the "Load More" button if needed
 function addLoadMoreButton() {
     const existingBtn = document.querySelector(".load-more");
     if (existingBtn) existingBtn.remove();
@@ -105,14 +110,17 @@ function addLoadMoreButton() {
     }
 }
 
-// 🔥 Form submit
+// Handle form submission and fetch books by subject
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const query = searchInput.value.toLowerCase().trim();
+    const query = encodeURIComponent(searchInput.value
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, "_"));
     if (!query) return;
 
-    // ✅ Mostra loading all’inizio
+    // Show loading indicator before starting the request
     loadingDiv.classList.remove("hidden");
 
     try {
@@ -135,7 +143,27 @@ form.addEventListener("submit", async (e) => {
     } catch {
         resultsDiv.innerHTML = "<p>Error fetching books. Please try again.</p>";
     } finally {
-        // ✅ Nascondi loading quando fetch finisce
+        // Hide loading indicator once the request completes
         loadingDiv.classList.add("hidden");
     }
+});
+
+
+
+// Get the scroll button element
+const scrollBtn = document.getElementById("scrollTopBtn");
+const searchWrapper = document.querySelector(".container");
+
+// Show the button when scrolling down 200px
+window.addEventListener("scroll", () => {
+    if (window.scrollY > 400) {
+        scrollBtn.classList.add("show");
+    } else {
+        scrollBtn.classList.remove("show");
+    }
+});
+
+// Scroll smoothly to the search input when button clicked
+scrollBtn.addEventListener("click", () => {
+    searchWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
 });

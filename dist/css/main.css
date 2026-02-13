@@ -11,14 +11,15 @@ body {
 }
 
 /* =======================
-   LAYOUT GENERALE
+   LAYOUT
 ======================= */
 .page {
   width: 100%;
   min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 2rem;
 }
 
 .container {
@@ -29,23 +30,17 @@ body {
   flex-direction: column;
   align-items: center;
 }
-
-/* =======================
-   HEADER
-======================= */
 .container img {
   width: 100%;
   max-width: 300px;
   height: auto;
   margin-bottom: 1rem;
 }
-
 .container h1 {
   margin-bottom: 1rem;
   font-size: 2.5rem;
   text-align: center;
 }
-
 .container h2 {
   margin-bottom: 1.2rem;
   font-size: 0.8rem;
@@ -58,12 +53,17 @@ body {
 .container h2 a:hover {
   color: #ff9100;
 }
+.container p {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
 
 /* =======================
    SEARCH
 ======================= */
 .search-wrapper {
-  position: relative;
+  position: sticky;
   width: 100%;
   max-width: 600px;
   margin-bottom: 1.5rem;
@@ -79,26 +79,26 @@ body {
   transition: 0.3s;
 }
 .search-wrapper input:focus {
-  border-color: #ff9100;
+  border-color: #e07b00;
 }
 .search-wrapper .search-btn {
   position: absolute;
+  color: black;
   right: 10px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: none;
   cursor: pointer;
-  font-size: 1.3rem;
-  filter: grayscale(100%);
-  transition: 0.3s;
+  font-size: 1.5rem;
+  transition: color 0.3s;
 }
 .search-wrapper .search-btn:hover {
-  filter: sepia(150%);
+  color: #e07b00;
 }
 
 /* =======================
-   LOADING
+   STATES
 ======================= */
 .loading {
   font-size: 1.1rem;
@@ -112,7 +112,7 @@ body {
 }
 
 /* =======================
-   RISULTATI LIBRI
+   RESULTS
 ======================= */
 .results {
   width: 100%;
@@ -120,7 +120,6 @@ body {
   gap: 1rem;
   margin-bottom: 2rem;
   justify-content: center;
-  /* MOBILE */
   grid-template-columns: 1fr;
   max-width: 400px;
 }
@@ -137,9 +136,9 @@ body {
 }
 .results .book-card img {
   width: 100%;
-  height: 220px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
   border-radius: 8px;
   margin-bottom: 0.5rem;
 }
@@ -166,21 +165,29 @@ body {
   background: #e07b00;
 }
 .results {
-  /* TABLET */
+  /* Tablet */
 }
 @media (min-width: 768px) {
   .results {
     grid-template-columns: repeat(3, 1fr);
     max-width: 900px;
   }
+  .results .book-card img {
+    height: 300px;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
 }
 .results {
-  /* DESKTOP */
+  /* Desktop */
 }
 @media (min-width: 1024px) {
   .results {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    max-width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1100px;
+  }
+  .results .book-card img {
+    height: 300px;
   }
 }
 
@@ -201,7 +208,7 @@ body {
 }
 
 /* =======================
-   SOCIAL / FOOTER
+   SOCIAL
 ======================= */
 ul {
   list-style: none;
@@ -217,13 +224,7 @@ ul li a {
   transition: 0.3s;
 }
 ul li a:hover {
-  color: #ff9100;
-}
-
-.container > p {
-  margin-top: 1rem;
-  font-size: 0.9rem;
-  text-align: center;
+  color: #e07b00;
 }
 
 /* =======================
@@ -232,7 +233,7 @@ ul li a:hover {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -274,7 +275,41 @@ ul li a:hover {
   cursor: pointer;
 }
 .modal .close-modal:hover {
-  color: #ff9100;
+  color: #e07b00;
+}
+
+/* =======================
+    Scroll to Top Button
+======================= */
+.scroll-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  background: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 200;
+}
+.scroll-top:hover {
+  background: #e07b00;
+}
+
+.scroll-top.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 /* =======================
