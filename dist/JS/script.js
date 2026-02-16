@@ -1,3 +1,7 @@
+// ==============================
+// DOM Elements
+// ==============================
+
 const searchInput = document.querySelector('#searchInput');
 const form = document.querySelector('.search-wrapper');
 const resultsDiv = document.querySelector('.results');
@@ -8,10 +12,32 @@ const modalTitle = document.querySelector(".modal-title");
 const modalPlot = document.querySelector(".modal-plot");
 const closeModalBtn = document.querySelector(".close-modal");
 
-// Pagination state variables
+const scrollBtn = document.getElementById("scrollTopBtn");
+const searchWrapper = document.querySelector(".container");
+
+
+// ==============================
+// Axios Instance (Professional Setup)
+// ==============================
+
+const api = axios.create({
+    baseURL: "https://openlibrary.org",
+    timeout: 5000
+});
+
+
+// ==============================
+// Pagination State
+// ==============================
+
 let allBooks = [];
 let booksShown = 0;
 const booksPerPage = 12;
+
+
+// ==============================
+// Modal Logic
+// ==============================
 
 // Open modal with book details
 function openModal(book) {
@@ -20,21 +46,29 @@ function openModal(book) {
     modal.classList.remove("hidden");
 }
 
+// Close modal button
 closeModalBtn.addEventListener("click", () => {
     modal.classList.add("hidden");
 });
 
+// Close modal clicking outside
 modal.addEventListener("click", (e) => {
     if (e.target === modal) {
         modal.classList.add("hidden");
     }
 });
 
-// Render books based on current pagination state
+
+// ==============================
+// Render Books
+// ==============================
+
 function renderBooks() {
+
     const nextBooks = allBooks.slice(booksShown, booksShown + booksPerPage);
 
     nextBooks.forEach(book => {
+
         const bookDiv = document.createElement("div");
         bookDiv.classList.add("book-card");
 
@@ -57,15 +91,21 @@ function renderBooks() {
 
         const popupBtn = bookDiv.querySelector(".popup-btn");
 
+        // ==============================
+        // Fetch Book Details (Axios)
+        // ==============================
+
         popupBtn.addEventListener("click", async () => {
-            const originalText = popupBtn.textContent; 
-            popupBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`; 
+
+            const originalText = popupBtn.textContent;
+            popupBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
 
             try {
-                const detailRes = await fetch(`https://openlibrary.org${book.key}.json`);
-                const detail = await detailRes.json();
+
+                const { data: detail } = await api.get(`${book.key}.json`);
 
                 let plot = "Description not available.";
+
                 if (detail.description) {
                     plot = typeof detail.description === "string"
                         ? detail.description
@@ -77,14 +117,19 @@ function renderBooks() {
                     plot: plot
                 });
 
-            } catch {
+            } catch (error) {
+
                 openModal({
                     title: book.title,
                     plot: "Unable to load description."
                 });
+
+                console.error("Error fetching book details:", error);
+
             } finally {
-                popupBtn.textContent = originalText; 
+                popupBtn.textContent = originalText;
             }
+
         });
 
     });
@@ -94,12 +139,18 @@ function renderBooks() {
     addLoadMoreButton();
 }
 
-// Create and append the "Load More" button if needed
+
+// ==============================
+// Load More Button
+// ==============================
+
 function addLoadMoreButton() {
+
     const existingBtn = document.querySelector(".load-more");
     if (existingBtn) existingBtn.remove();
 
     if (booksShown < allBooks.length) {
+
         const loadMoreBtn = document.createElement("button");
         loadMoreBtn.textContent = "Load more";
         loadMoreBtn.classList.add("load-more");
@@ -110,22 +161,31 @@ function addLoadMoreButton() {
     }
 }
 
-// Handle form submission and fetch books by subject
+
+// ==============================
+// Search Form Submission
+// ==============================
+
 form.addEventListener("submit", async (e) => {
+
     e.preventDefault();
 
-    const query = encodeURIComponent(searchInput.value
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "_"));
+    const query = encodeURIComponent(
+        searchInput.value
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "_")
+    );
+
     if (!query) return;
 
-    // Show loading indicator before starting the request
     loadingDiv.classList.remove("hidden");
 
     try {
-        const response = await fetch(`https://openlibrary.org/subjects/${query}.json?limit=100`);
-        const data = await response.json();
+
+        const { data } = await api.get(`/subjects/${query}.json`, {
+            params: { limit: 100 }
+        });
 
         resultsDiv.innerHTML = "";
         booksShown = 0;
@@ -138,23 +198,30 @@ form.addEventListener("submit", async (e) => {
 
         renderBooks();
 
-        resultsDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+        resultsDiv.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
 
-    } catch {
+    } catch (error) {
+
         resultsDiv.innerHTML = "<p>Error fetching books. Please try again.</p>";
+        console.error("Error fetching books:", error);
+
     } finally {
-        // Hide loading indicator once the request completes
+
         loadingDiv.classList.add("hidden");
+
     }
+
 });
 
 
+// ==============================
+// Scroll To Top Button
+// ==============================
 
-// Get the scroll button element
-const scrollBtn = document.getElementById("scrollTopBtn");
-const searchWrapper = document.querySelector(".container");
-
-// Show the button when scrolling down 200px
+// Show button after scrolling 400px
 window.addEventListener("scroll", () => {
     if (window.scrollY > 400) {
         scrollBtn.classList.add("show");
@@ -163,7 +230,10 @@ window.addEventListener("scroll", () => {
     }
 });
 
-// Scroll smoothly to the search input when button clicked
+// Smooth scroll to search section
 scrollBtn.addEventListener("click", () => {
-    searchWrapper.scrollIntoView({ behavior: "smooth", block: "start" });
+    searchWrapper.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
 });
