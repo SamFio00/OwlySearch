@@ -1,6 +1,6 @@
-// ==============================
+
 // DOM Elements
-// ==============================
+
 
 const searchInput = document.querySelector('#searchInput');
 const form = document.querySelector('.search-wrapper');
@@ -16,9 +16,9 @@ const scrollBtn = document.getElementById("scrollTopBtn");
 const searchWrapper = document.querySelector(".container");
 
 
-// ==============================
-// Axios Instance (Professional Setup)
-// ==============================
+
+// Axios Instance 
+
 
 const api = axios.create({
     baseURL: "https://openlibrary.org",
@@ -26,18 +26,18 @@ const api = axios.create({
 });
 
 
-// ==============================
+
 // Pagination State
-// ==============================
+
 
 let allBooks = [];
 let booksShown = 0;
 const booksPerPage = 12;
 
 
-// ==============================
+
 // Modal Logic
-// ==============================
+
 
 // Open modal with book details
 function openModal(book) {
@@ -59,9 +59,9 @@ modal.addEventListener("click", (e) => {
 });
 
 
-// ==============================
+
 // Render Books
-// ==============================
+
 
 function renderBooks() {
 
@@ -91,9 +91,9 @@ function renderBooks() {
 
         const popupBtn = bookDiv.querySelector(".popup-btn");
 
-        // ==============================
-        // Fetch Book Details (Axios)
-        // ==============================
+        
+        // Fetch Book Details 
+       
 
         popupBtn.addEventListener("click", async () => {
 
@@ -140,9 +140,9 @@ function renderBooks() {
 }
 
 
-// ==============================
+
 // Load More Button
-// ==============================
+
 
 function addLoadMoreButton() {
 
@@ -162,9 +162,9 @@ function addLoadMoreButton() {
 }
 
 
-// ==============================
+
 // Search Form Submission
-// ==============================
+
 
 form.addEventListener("submit", async (e) => {
 
@@ -217,9 +217,9 @@ form.addEventListener("submit", async (e) => {
 });
 
 
-// ==============================
+
 // Scroll To Top Button
-// ==============================
+
 
 // Show button after scrolling 400px
 window.addEventListener("scroll", () => {
