@@ -1,8 +1,9 @@
 import { defineConfig } from "vite";
 
 export default defineConfig({
-    test: {
-        globals: true,
-        environment: "jsdom",
-    },
+  base: "/OwlySearch/",
+  test: {
+    globals: true,
+    environment: "jsdom",
+  },
 });
