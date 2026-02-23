@@ -1,4 +1,4 @@
-import "./main.scss";
+import "../styles/main.scss";
 
 import { fetchBooksByCategory } from "./services/apiService.js";
 import { renderBooks } from "./ui/renderBooks.js";
