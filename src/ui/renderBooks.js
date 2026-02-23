@@ -16,7 +16,7 @@ export function renderBooks(state, resultsDiv) {
 
     const coverUrl = book.cover_id
       ? `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`
-      : "/src/media/img/default_cover.jpg";
+      : "/media/img/default_cover.jpg";
 
     const authors = book.authors
       ? book.authors.map((a) => a.name).join(", ")
