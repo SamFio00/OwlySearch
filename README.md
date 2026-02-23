@@ -4,9 +4,9 @@
   </a>
 </p>
 
-# 📚 OwlySearch
+# 📚 Owly
 
-OwlySearch è un'applicazione web sviluppata in JavaScript che consente di cercare e scoprire libri utilizzando l'API di Open Library.  
+Owly è un'applicazione web sviluppata in JavaScript che consente di cercare e scoprire libri utilizzando l'API di Open Library.  
 L'utente può effettuare ricerche per genere e visualizzare una lista di libri con titolo, autore e descrizione in un'interfaccia semplice e responsiva.
 
 👉 **Live Demo:**  
